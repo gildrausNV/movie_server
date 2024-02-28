@@ -3,6 +3,8 @@ package com.example.movie_server.service;
 import com.example.movie_server.model.Actor;
 import com.example.movie_server.repository.ActorRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +16,8 @@ public class ActorService {
 
     private final ActorRepository actorRepository;
 
-    public List<Actor> getAllActors(){
-        return actorRepository.findAll();
+    public Page<Actor> getAllActors(Pageable pageable){
+        return actorRepository.findAll(pageable);
     }
 
     public Actor getActorById(String actorId) {

@@ -5,6 +5,8 @@ import com.example.movie_server.repository.ActorRepository;
 import com.example.movie_server.repository.MovieRepository;
 import com.example.movie_server.repository.WatchlistRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -67,5 +69,9 @@ public class MovieService {
 
     public List<Movie> searchMovies(String title) {
         return movieRepository.findMoviesByTitleLike(title);
+    }
+
+    public Page<Movie> getAll(Pageable pageable){
+        return movieRepository.findAll(pageable);
     }
 }

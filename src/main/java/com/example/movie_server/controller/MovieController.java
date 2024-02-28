@@ -4,6 +4,9 @@ import com.example.movie_server.model.Actor;
 import com.example.movie_server.model.Movie;
 import com.example.movie_server.service.MovieService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,8 +19,8 @@ public class MovieController {
     private final MovieService movieService;
 
     @GetMapping
-    public List<Movie> getAllMovies(){
-        return movieService.getAll();
+    public Page<Movie> getAllMovie(Pageable pageable){
+        return movieService.getAll(pageable);
     }
 
     @GetMapping("/{movieId}")

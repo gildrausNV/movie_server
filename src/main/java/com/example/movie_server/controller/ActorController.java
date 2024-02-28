@@ -3,6 +3,8 @@ package com.example.movie_server.controller;
 import com.example.movie_server.model.Actor;
 import com.example.movie_server.service.ActorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,8 +18,8 @@ public class ActorController {
     private final ActorService actorService;
 
     @GetMapping
-    public List<Actor> getAllActors(){
-        return actorService.getAllActors();
+    public Page<Actor> getAllActors(Pageable pageable){
+        return actorService.getAllActors(pageable);
     }
 
     @GetMapping("/{actorId}")
