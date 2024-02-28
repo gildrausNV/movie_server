@@ -63,4 +63,17 @@ public class ActorService {
 
         return actorMovies;
     }
+
+    public Actor updateActor(String actorId, Actor actor) {
+        Actor existingActor = actorRepository.findById(actorId).orElseThrow(NoSuchElementException::new);
+
+        existingActor.setNationality(actor.getNationality());
+        existingActor.setImage(actor.getImage());
+        existingActor.setLastName(actor.getLastName());
+        existingActor.setFirstName(actor.getFirstName());
+        existingActor.setDateOfBirth(actor.getDateOfBirth());
+        existingActor.setPlaceOfBirth(actor.getPlaceOfBirth());
+
+        return actorRepository.save(existingActor);
+    }
 }

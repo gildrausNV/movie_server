@@ -41,4 +41,9 @@ public class ActorController {
     public List<Movie> getActorMovies(@PathVariable String actorId){
         return actorService.getActorMovies(actorId);
     }
+
+    @PutMapping("/{actorId}")
+    public Actor updateActor(@PathVariable String actorId, @RequestBody Actor actor){
+        return actorService.updateActor(actorId, actor);
+    }
 }

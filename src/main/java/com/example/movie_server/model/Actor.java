@@ -17,5 +17,8 @@ public class Actor {
     private String firstName;
     private String lastName;
     private String image;
+    private String dateOfBirth;
+    private String placeOfBirth;
+    private String nationality;
 
 }
