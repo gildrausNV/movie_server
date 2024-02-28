@@ -33,4 +33,16 @@ public class ReviewService {
     public void deleteReview(String reviewId){
         reviewRepository.deleteById(reviewId);
     }
+
+    public long getMovieRating(String movieId) {
+        List<Review> movieReviews = getMovieReviews(movieId);
+
+        if(movieReviews.size() == 0) return 0;
+
+        long rating = 0;
+
+        for(Review review: movieReviews) rating += review.getRating();
+
+        return rating/movieReviews.size();
+    }
 }

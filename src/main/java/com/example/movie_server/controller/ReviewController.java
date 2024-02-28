@@ -28,4 +28,9 @@ public class ReviewController {
     public void deleteReview(@PathVariable String reviewId){
         reviewService.deleteReview(reviewId);
     }
+
+    @GetMapping("/rating/{movieId}")
+    public long getMovieRating(@PathVariable String movieId){
+        return reviewService.getMovieRating(movieId);
+    }
 }
