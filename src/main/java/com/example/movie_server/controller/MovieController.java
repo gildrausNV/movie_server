@@ -55,9 +55,9 @@ public class MovieController {
     }
 
     @GetMapping("/genre/{genre}")
-    public List<Movie> searchMoviesByGenre(@PathVariable String genre){
+    public Page<Movie> searchMoviesByGenre(@PathVariable String genre, Pageable pageable){
         Genre genreValue = Genre.valueOf(genre.toUpperCase());
-        return movieService.searchMoviesByGenre(genreValue);
+        return movieService.searchMoviesByGenre(genreValue, pageable);
     }
 
 }

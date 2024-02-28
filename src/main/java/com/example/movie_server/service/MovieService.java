@@ -76,7 +76,7 @@ public class MovieService {
         return movieRepository.findAll(pageable);
     }
 
-    public List<Movie> searchMoviesByGenre(Genre genre) {
-        return movieRepository.findMoviesByGenre(genre);
+    public Page<Movie> searchMoviesByGenre(Genre genre, Pageable pageable) {
+        return movieRepository.findMoviesByGenre(genre, pageable);
     }
 }
