@@ -22,4 +22,5 @@ public class Movie {
     private String description;
     private String image;
     private List<ActorRole> roles;
+    private Genre genre;
 }

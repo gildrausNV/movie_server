@@ -1,6 +1,7 @@
 package com.example.movie_server.controller;
 
 import com.example.movie_server.model.Actor;
+import com.example.movie_server.model.Genre;
 import com.example.movie_server.model.Movie;
 import com.example.movie_server.service.MovieService;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +50,14 @@ public class MovieController {
     }
 
     @GetMapping("/search/{title}")
-    public List<Movie> searchMovies(@PathVariable String title){
-        return movieService.searchMovies(title);
+    public List<Movie> searchMoviesByTitle(@PathVariable String title){
+        return movieService.searchMoviesByTitle(title);
     }
+
+    @GetMapping("/genre/{genre}")
+    public List<Movie> searchMoviesByGenre(@PathVariable String genre){
+        Genre genreValue = Genre.valueOf(genre.toUpperCase());
+        return movieService.searchMoviesByGenre(genreValue);
+    }
+
 }

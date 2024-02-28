@@ -63,15 +63,20 @@ public class MovieService {
         existingMovie.setTitle(movie.getTitle());
         existingMovie.setReleaseDate(movie.getReleaseDate());
         existingMovie.setRoles(movie.getRoles());
+        existingMovie.setGenre(movie.getGenre());
 
         return movieRepository.save(existingMovie);
     }
 
-    public List<Movie> searchMovies(String title) {
+    public List<Movie> searchMoviesByTitle(String title) {
         return movieRepository.findMoviesByTitleLike(title);
     }
 
     public Page<Movie> getAll(Pageable pageable){
         return movieRepository.findAll(pageable);
+    }
+
+    public List<Movie> searchMoviesByGenre(Genre genre) {
+        return movieRepository.findMoviesByGenre(genre);
     }
 }
