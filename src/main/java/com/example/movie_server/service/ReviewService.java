@@ -30,6 +30,12 @@ public class ReviewService {
         return reviewRepository.save(review);
     }
 
+    public Review saveReview(Review review){
+//        User currentlyLoggedInUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        review.setUser(currentlyLoggedInUser);
+        return reviewRepository.save(review);
+    }
+
     public void deleteReview(String reviewId){
         reviewRepository.deleteById(reviewId);
     }
