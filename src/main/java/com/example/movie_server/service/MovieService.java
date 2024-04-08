@@ -27,8 +27,9 @@ public class MovieService {
     }
 
     public Movie getMovieById(String movieId) {
-        return movieRepository.findById(movieId).orElseThrow(NoSuchElementException::new);
+        return movieRepository.findById(movieId).orElseThrow(() -> new NoSuchElementException("Movie not found with ID: " + movieId));
     }
+
 
     public List<Actor> getMovieActors(String movieId) {
         List<ActorRole> roles = getMovieById(movieId).getRoles();
@@ -36,7 +37,7 @@ public class MovieService {
         List<Actor> movieActors = new ArrayList<>();
 
         for(ActorRole ar: roles){
-            movieActors.add(actorRepository.findById(ar.getActorId()).orElseThrow(NoSuchElementException::new));
+            movieActors.add(actorRepository.findById(ar.getActorId()).orElseThrow(() -> new NoSuchElementException("Actor not found with ID: " + ar.getActorId())));
         }
 
         return movieActors;
@@ -44,6 +45,14 @@ public class MovieService {
 
 
     public Movie saveMovie(Movie movie) {
+        if (movie == null ||
+                movie.getImage() == null || movie.getImage().isEmpty() ||
+                movie.getDescription() == null || movie.getDescription().isEmpty() ||
+                movie.getTitle() == null || movie.getTitle().isEmpty() ||
+                movie.getReleaseDate() == null || movie.getReleaseDate().isEmpty() ||
+                movie.getGenre() == null) {
+            throw new IllegalArgumentException("Movie fields cannot be empty");
+        }
         return movieRepository.save(movie);
     }
 
@@ -56,7 +65,15 @@ public class MovieService {
     }
 
     public Movie updateMovie(String movieId, Movie movie) {
-        Movie existingMovie = movieRepository.findById(movieId).orElseThrow(NoSuchElementException::new);
+        if (movie == null ||
+                movie.getImage() == null || movie.getImage().isEmpty() ||
+                movie.getDescription() == null || movie.getDescription().isEmpty() ||
+                movie.getTitle() == null || movie.getTitle().isEmpty() ||
+                movie.getReleaseDate() == null || movie.getReleaseDate().isEmpty() ||
+                movie.getGenre() == null) {
+            throw new IllegalArgumentException("Movie fields cannot be empty");
+        }
+        Movie existingMovie = movieRepository.findById(movieId).orElseThrow(() -> new NoSuchElementException("Movie not found with ID: " + movieId));
 
         existingMovie.setDescription(movie.getDescription());
         existingMovie.setImage(movie.getImage());

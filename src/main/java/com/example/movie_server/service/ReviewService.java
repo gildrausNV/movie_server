@@ -23,8 +23,9 @@ public class ReviewService {
     }
 
     public Review saveReview(Review review, String movieId){
+        if(review.getContent() == null || review.getContent().isEmpty()) throw new IllegalArgumentException("Review comment cannot be empty");
         User currentlyLoggedInUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Movie movie = movieRepository.findById(movieId).orElseThrow(NoSuchElementException::new);
+        Movie movie = movieRepository.findById(movieId).orElseThrow(() -> new NoSuchElementException("Movie not found with ID: " + movieId));
         review.setMovie(movie);
         review.setUser(currentlyLoggedInUser);
         return reviewRepository.save(review);

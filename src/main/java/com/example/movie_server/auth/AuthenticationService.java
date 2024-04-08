@@ -58,17 +58,4 @@ public class AuthenticationService {
         return new AuthenticationResponse(jwtToken, user.getRole(), user.getId());
     }
 
-
-    private String generateRandomVerificationCode() {
-        String characters = "0123456789";
-        StringBuilder code = new StringBuilder();
-
-        Random random = new Random();
-        IntStream.range(0,6).forEach(i -> {
-            int index = random.nextInt(characters.length());
-            code.append(characters.charAt(index));
-        });
-
-        return code.toString();
-    }
 }

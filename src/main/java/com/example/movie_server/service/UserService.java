@@ -26,11 +26,11 @@ public class UserService {
     }
 
     public User getUserById(String userId){
-        return userRepository.findUserById(userId).orElseThrow(NoSuchElementException::new);
+        return userRepository.findUserById(userId).orElseThrow(() -> new NoSuchElementException("User not found with ID: " + userId));
     }
 
     public User findUserByUsername(String username){
-        return userRepository.findUserByUsername(username).orElseThrow(NoSuchElementException::new);
+        return userRepository.findUserByUsername(username).orElseThrow(() -> new NoSuchElementException("User not found with username: " + username));
     }
 
     public Watchlist findWatchlistByUserId(String userId) {
@@ -40,7 +40,7 @@ public class UserService {
     public Watchlist addToWatchlist(String movieId) {
         User currentlyLoggedInUser = getCurrentlyLoggedInUser();
         Watchlist watchlist = watchlistRepository.findWatchlistByUser_Id(currentlyLoggedInUser.getId());
-        Movie movie = movieRepository.findById(movieId).orElseThrow(NoSuchElementException::new);
+        Movie movie = movieRepository.findById(movieId).orElseThrow(() -> new NoSuchElementException("Movie not found with ID: " + movieId));
         List<Movie> movies = watchlist.getMovies();
 
         if(!movies.contains(movie)){
@@ -56,8 +56,17 @@ public class UserService {
     }
 
     public User save(User user) {
+        if (user == null ||
+                user.getFirstName() == null || user.getFirstName().isEmpty() ||
+                user.getLastName() == null || user.getLastName().isEmpty() ||
+                user.getPassword() == null || user.getPassword().isEmpty() ||
+                user.getUsername() == null || user.getUsername().isEmpty() ||
+                user.getEmail() == null || user.getEmail().isEmpty()) {
+            throw new IllegalArgumentException("User fields cannot be empty");
+        }
         return userRepository.save(user);
     }
+
 
     public User getCurrentlyLoggedInUser() {
         return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

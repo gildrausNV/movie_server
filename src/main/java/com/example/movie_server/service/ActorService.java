@@ -26,10 +26,19 @@ public class ActorService {
     }
 
     public Actor getActorById(String actorId) {
-        return actorRepository.findById(actorId).orElseThrow(NoSuchElementException::new);
+        return actorRepository.findById(actorId).orElseThrow(() -> new NoSuchElementException("Actor not found with ID: " + actorId));
     }
 
     public Actor saveActor(Actor actor) {
+        if (actor == null ||
+                actor.getFirstName() == null || actor.getFirstName().isEmpty() ||
+                actor.getLastName() == null || actor.getLastName().isEmpty() ||
+                actor.getDateOfBirth() == null || actor.getDateOfBirth().isEmpty() ||
+                actor.getNationality() == null || actor.getNationality().isEmpty() ||
+                actor.getImage() == null || actor.getImage().isEmpty() ||
+                actor.getPlaceOfBirth() == null || actor.getPlaceOfBirth().isEmpty()) {
+            throw new IllegalArgumentException("Actor fields cannot be empty");
+        }
         return actorRepository.save(actor);
     }
 
@@ -65,7 +74,16 @@ public class ActorService {
     }
 
     public Actor updateActor(String actorId, Actor actor) {
-        Actor existingActor = actorRepository.findById(actorId).orElseThrow(NoSuchElementException::new);
+        if (actor == null ||
+                actor.getFirstName() == null || actor.getFirstName().isEmpty() ||
+                actor.getLastName() == null || actor.getLastName().isEmpty() ||
+                actor.getDateOfBirth() == null || actor.getDateOfBirth().isEmpty() ||
+                actor.getNationality() == null || actor.getNationality().isEmpty() ||
+                actor.getImage() == null || actor.getImage().isEmpty() ||
+                actor.getPlaceOfBirth() == null || actor.getPlaceOfBirth().isEmpty()) {
+            throw new IllegalArgumentException("Actor fields cannot be empty");
+        }
+        Actor existingActor = actorRepository.findById(actorId).orElseThrow(() -> new NoSuchElementException("Actor not found with ID: " + actorId));
 
         existingActor.setNationality(actor.getNationality());
         existingActor.setImage(actor.getImage());
