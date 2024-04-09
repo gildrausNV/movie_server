@@ -73,6 +73,12 @@ public class MovieServiceTests {
     }
 
     @Test
+    @DisplayName("Test getMovieById() with non-existent ID")
+    public void getMovieByIdTestWithNonExistingId(){
+        assertThrows(NoSuchElementException.class, () -> movieService.getMovieById("001"));
+    }
+
+    @Test
     @DisplayName("Test getMovieActors()")
     public void getMovieActorsTest() {
         // Given
@@ -99,4 +105,59 @@ public class MovieServiceTests {
         assertThat(result).hasSize(2);
     }
 
+    @Test
+    @DisplayName("Test updateMovie")
+    public void testUpdateMovie() {
+        String movieId = "1";
+        Movie existingMovie = Movie.builder()
+                .id(movieId)
+                .description("Description")
+                .image("Image")
+                .title("Title")
+                .releaseDate("ReleaseDate")
+                .genre(Genre.ACTION)
+                .build();
+        Movie updatedMovie = Movie.builder()
+                .id(movieId)
+                .description("Updated Description")
+                .image("Updated Image")
+                .title("Updated Title")
+                .releaseDate("Updated ReleaseDate")
+                .genre(Genre.HORROR)
+                .build();
+
+        when(movieRepository.findById(movieId)).thenReturn(Optional.of(existingMovie));
+        when(movieRepository.save(any(Movie.class))).thenReturn(updatedMovie);
+
+        Movie result = movieService.updateMovie(movieId, updatedMovie);
+
+        verify(movieRepository, times(1)).findById(movieId);
+        verify(movieRepository, times(1)).save(any(Movie.class));
+
+        assertEquals(updatedMovie, result);
+    }
+
+    @Test
+    @DisplayName("Test updateMovie with empty fields")
+    public void testUpdateMovieWithEmptyFields() {
+        String movieId = "1";
+        Movie existingMovie = Movie.builder()
+                .id(movieId)
+                .description("Description")
+                .image("Image")
+                .title("Title")
+                .releaseDate("ReleaseDate")
+                .genre(Genre.ACTION)
+                .build();
+        Movie updatedMovie = Movie.builder()
+                .id(movieId)
+                .description("")
+                .image("")
+                .title("")
+                .releaseDate("")
+                .genre(null)
+                .build();
+
+        assertThrows(IllegalArgumentException.class, () -> movieService.updateMovie(movieId, updatedMovie));
+    }
 }

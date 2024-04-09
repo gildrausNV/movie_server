@@ -13,13 +13,17 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ReviewServiceTests {
@@ -52,6 +56,35 @@ public class ReviewServiceTests {
         assertThat(savedReview).isNotNull();
         assertThat(savedReview.getId()).isEqualTo("001");
         verify(reviewRepository, times(1)).save(review);
+    }
+
+    @Test
+    @DisplayName("Test saveReview() with empty fields")
+    public void saveReviewWithEmptyFieldsTest(){
+        Review review = Review.builder()
+                .id("001")
+                .movie(null)
+                .user(null)
+                .content("")
+                .rating(7)
+                .build();
+
+        assertThrows(IllegalArgumentException.class, () -> reviewService.saveReview(review, ""));
+    }
+
+    @Test
+    @DisplayName("Test saveReview() with rating less than 0")
+    public void saveReviewWithRatingLessThanZero(){
+        User user = User.builder().id("1").build();
+        Review review = Review.builder()
+                .id("001")
+                .movie(new Movie())
+                .user(user)
+                .content("fds")
+                .rating(-3)
+                .build();
+
+        assertThrows(IllegalArgumentException.class, () -> reviewService.saveReview(review, ""));
     }
 
     @Test

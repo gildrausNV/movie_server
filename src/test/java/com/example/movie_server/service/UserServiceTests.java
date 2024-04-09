@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,6 +47,20 @@ public class UserServiceTests {
 
         verify(userRepository, times(1)).save(user);
         assertEquals(user, result);
+    }
+
+    @Test
+    @DisplayName("Test saveUser() with empty fields")
+    public void saveUserWithEmptyFieldsTest(){
+        User user = User.builder()
+                .lastName("")
+                .email("")
+                .firstName("")
+                .password("")
+                .username("")
+                .role(Role.USER)
+                .build();
+        assertThrows(IllegalArgumentException.class, () -> userService.save(user));
     }
 
     @Test
@@ -92,5 +107,11 @@ public class UserServiceTests {
 
         verify(userRepository, times(1)).findUserById("001");
         assertEquals(result, user);
+    }
+
+    @Test
+    @DisplayName("Test findUserById with non-existent ID")
+    public void findByUserIdWithNonExistentIdTest(){
+        assertThrows(NoSuchElementException.class, () -> userService.getUserById("001"));
     }
 }

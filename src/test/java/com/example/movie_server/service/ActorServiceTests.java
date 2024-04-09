@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 //import static org.assertj.core.api.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,6 +46,22 @@ public class ActorServiceTests {
 
         verify(actorRepository, times(1)).save(actor);
         assertEquals(result, actor);
+    }
+
+    @Test
+    @DisplayName("Test saveActor() with empty fields")
+    public void saveActorTestWithEmptyFields() {
+        // Create an actor with empty fields
+        Actor actor = Actor.builder()
+                .firstName("")
+                .nationality("")
+                .placeOfBirth("")
+                .dateOfBirth("")
+                .lastName("")
+                .build();
+
+        // Call the saveActor method and assert that it throws an IllegalArgumentException
+        assertThrows(IllegalArgumentException.class, () -> actorService.saveActor(actor));
     }
 
     @Test
@@ -95,5 +112,11 @@ public class ActorServiceTests {
 
         assertEquals(result, actor);
         verify(actorRepository, times(1)).findById("001");
+    }
+
+    @Test
+    @DisplayName("Test getActorById() with non-existent ID")
+    public void findByIdTestWithNonExistendId(){
+        assertThrows(NoSuchElementException.class, () -> actorService.getActorById("001"));
     }
 }
