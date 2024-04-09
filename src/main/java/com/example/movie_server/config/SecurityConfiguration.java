@@ -35,6 +35,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/actors/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/users**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/comments**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/reviews**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/movies**").hasAnyAuthority(Role.ADMIN.getAuthority())
                         .requestMatchers(HttpMethod.POST, "/actors**").hasAnyAuthority(Role.ADMIN.getAuthority())
                         .requestMatchers(HttpMethod.POST, "/users**").hasAnyAuthority(Role.USER.getAuthority())
