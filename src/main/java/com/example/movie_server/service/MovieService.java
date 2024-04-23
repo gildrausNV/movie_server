@@ -47,7 +47,7 @@ public class MovieService {
                 movie.getImage() == null || movie.getImage().isEmpty() ||
                 movie.getDescription() == null || movie.getDescription().isEmpty() ||
                 movie.getTitle() == null || movie.getTitle().isEmpty() ||
-                movie.getReleaseDate() == null || movie.getReleaseDate().isEmpty() ||
+                movie.getReleaseDate() == null || movie.getReleaseDate() == null ||
                 movie.getGenre() == null) {
             throw new IllegalArgumentException("Movie fields cannot be empty");
         }
@@ -65,7 +65,7 @@ public class MovieService {
                 movie.getImage() == null || movie.getImage().isEmpty() ||
                 movie.getDescription() == null || movie.getDescription().isEmpty() ||
                 movie.getTitle() == null || movie.getTitle().isEmpty() ||
-                movie.getReleaseDate() == null || movie.getReleaseDate().isEmpty() ||
+                movie.getReleaseDate() == null || movie.getReleaseDate() == null ||
                 movie.getGenre() == null) {
             throw new IllegalArgumentException("Movie fields cannot be empty");
         }

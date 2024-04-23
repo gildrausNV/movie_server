@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -109,20 +110,22 @@ public class MovieServiceTests {
     @DisplayName("Test updateMovie")
     public void testUpdateMovie() {
         String movieId = "1";
+        LocalDate existingReleaseDate = LocalDate.parse("2022-01-01"); // Example existing release date
         Movie existingMovie = Movie.builder()
                 .id(movieId)
                 .description("Description")
                 .image("Image")
                 .title("Title")
-                .releaseDate("ReleaseDate")
+                .releaseDate(existingReleaseDate)
                 .genre(Genre.ACTION)
                 .build();
+        LocalDate updatedReleaseDate = LocalDate.parse("2023-01-01"); // Example updated release date
         Movie updatedMovie = Movie.builder()
                 .id(movieId)
                 .description("Updated Description")
                 .image("Updated Image")
                 .title("Updated Title")
-                .releaseDate("Updated ReleaseDate")
+                .releaseDate(updatedReleaseDate)
                 .genre(Genre.HORROR)
                 .build();
 
@@ -137,6 +140,8 @@ public class MovieServiceTests {
         assertEquals(updatedMovie, result);
     }
 
+
+
     @Test
     @DisplayName("Test updateMovie with empty fields")
     public void testUpdateMovieWithEmptyFields() {
@@ -146,7 +151,6 @@ public class MovieServiceTests {
                 .description("Description")
                 .image("Image")
                 .title("Title")
-                .releaseDate("ReleaseDate")
                 .genre(Genre.ACTION)
                 .build();
         Movie updatedMovie = Movie.builder()
@@ -154,7 +158,6 @@ public class MovieServiceTests {
                 .description("")
                 .image("")
                 .title("")
-                .releaseDate("")
                 .genre(null)
                 .build();
 
