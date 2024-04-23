@@ -15,4 +15,8 @@ public class ActorRole {
     private String id;
     private String actorId;
     private String role;
+
+    public ActorRole(String id) {
+        this.id = id;
+    }
 }

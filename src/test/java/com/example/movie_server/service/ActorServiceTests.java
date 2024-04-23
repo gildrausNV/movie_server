@@ -1,7 +1,10 @@
 package com.example.movie_server.service;
 
 import com.example.movie_server.model.Actor;
+import com.example.movie_server.model.ActorRole;
+import com.example.movie_server.model.Movie;
 import com.example.movie_server.repository.ActorRepository;
+import com.example.movie_server.repository.MovieRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,10 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 //import static org.assertj.core.api.Assertions.assertThat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -25,9 +25,12 @@ import static org.mockito.Mockito.*;
 public class ActorServiceTests {
     @Mock
     private ActorRepository actorRepository;
-
+    @Mock
+    private MovieRepository movieRepository;
     @InjectMocks
     private ActorService actorService;
+    @InjectMocks
+    private MovieService movieService;
 
     @Test
     @DisplayName("Test saveActor()")
@@ -92,6 +95,28 @@ public class ActorServiceTests {
 
         assertEquals(result.getContent(), actors);
         verify(actorRepository, times(1)).findAll(pageable);
+    }
+
+    @Test
+    @DisplayName("Test getActorMovies")
+    public void testGetActorMovies() {
+
+        Movie movie1 = Movie.builder().id("1").title("Movie 1").roles(Arrays.asList(ActorRole.builder().actorId("1").build())).build();
+        Movie movie2 = Movie.builder().id("2").title("Movie 2").roles(Arrays.asList(ActorRole.builder().actorId("2").build(), ActorRole.builder().actorId("3").build())).build();
+        Movie movie3 = Movie.builder().id("3").title("Movie 3").roles(Arrays.asList(ActorRole.builder().actorId("1").build(), ActorRole.builder().actorId("4").build())).build();
+
+        // Mock the findAll method of movieRepository to return the sample movies
+        when(movieRepository.findAll()).thenReturn(Arrays.asList(movie1, movie2, movie3));
+
+        // Call the getActorMovies method with an actorId
+        List<Movie> actorMovies = actorService.getActorMovies("1");
+
+        // Check if the correct movies are returned
+        List<Movie> expectedMovies = Arrays.asList(movie1, movie3);
+        assertEquals(expectedMovies.size(), actorMovies.size());
+        for (int i = 0; i < expectedMovies.size(); i++) {
+            assertEquals(expectedMovies.get(i).getId(), actorMovies.get(i).getId());
+        }
     }
 
     @Test

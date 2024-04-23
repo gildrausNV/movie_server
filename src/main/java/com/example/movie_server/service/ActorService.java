@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,15 +43,15 @@ public class ActorService {
         return actorRepository.save(actor);
     }
 
-    public List<Actor> saveActors(List<Actor> actors) {
-        List<Actor> currentActors = actorRepository.findAll();
-        for (Actor actor: actors){
-            if(!currentActors.contains(actor)){
-                actorRepository.save(actor);
-            }
-        }
-        return actorRepository.findAll();
-    }
+//    public List<Actor> saveActors(List<Actor> actors) {
+//        List<Actor> currentActors = actorRepository.findAll();
+//        for (Actor actor: actors){
+//            if(!currentActors.contains(actor)){
+//                actorRepository.save(actor);
+//            }
+//        }
+//        return actorRepository.findAll();
+//    }
 
     public List<Actor> searchActors(String firstName) {
         return actorRepository.findActorByFirstName(firstName);
@@ -58,19 +59,11 @@ public class ActorService {
 
     public List<Movie> getActorMovies(String actorId) {
         List<Movie> movies = movieRepository.findAll();
-        List<Movie> actorMovies = new ArrayList<>();
 
-        for(Movie movie: movies){
-            List<ActorRole> roles = movie.getRoles();
-            for(ActorRole role: roles){
-                if(role.getActorId().equals(actorId)){
-                    actorMovies.add(movie);
-                    break;
-                }
-            }
-        }
-
-        return actorMovies;
+        return movies.stream()
+                .filter(movie -> movie.getRoles().stream()
+                        .anyMatch(role -> role.getActorId().equals(actorId)))
+                .collect(Collectors.toList());
     }
 
     public Actor updateActor(String actorId, Actor actor) {

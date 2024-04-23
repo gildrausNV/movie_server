@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,13 +36,9 @@ public class MovieService {
     public List<Actor> getMovieActors(String movieId) {
         List<ActorRole> roles = getMovieById(movieId).getRoles();
 
-        List<Actor> movieActors = new ArrayList<>();
-
-        for(ActorRole ar: roles){
-            movieActors.add(actorRepository.findById(ar.getActorId()).orElseThrow(() -> new NoSuchElementException("Actor not found with ID: " + ar.getActorId())));
-        }
-
-        return movieActors;
+        return roles.stream().map(role -> actorRepository.findById(role.getActorId()).orElseThrow(() -> new NoSuchElementException("Actor not found with ID: " + role.getActorId())))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
 
@@ -59,9 +57,7 @@ public class MovieService {
     public boolean isInWatchlist(String movieId) {
         User currentlyLoggedInUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Watchlist watchlist = watchlistRepository.findWatchlistByUser_Id(currentlyLoggedInUser.getId());
-        List<Movie> movies = watchlist.getMovies();
-        Movie movie = getMovieById(movieId);
-        return movies.contains(movie);
+        return watchlist.getMovies().stream().anyMatch(m -> m.getId().equals(movieId));
     }
 
     public Movie updateMovie(String movieId, Movie movie) {
