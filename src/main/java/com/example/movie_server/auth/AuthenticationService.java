@@ -1,6 +1,7 @@
 package com.example.movie_server.auth;
 
 import com.example.movie_server.config.JwtService;
+import com.example.movie_server.exception.UsernameExistsException;
 import com.example.movie_server.model.Role;
 import com.example.movie_server.model.User;
 import com.example.movie_server.repository.UserRepository;
@@ -26,6 +27,8 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
+        if(userService.checkUsernameExists(request.getUsername())) throw new UsernameExistsException("Username already exists");
+
         var user = User.builder()
                 .firstName(request.getFirstname())
                 .lastName(request.getLastname())
@@ -35,6 +38,9 @@ public class AuthenticationService {
                 .role(Role.USER)
                 .avatar(request.getAvatar())
                 .build();
+
+
+
         userService.save(user);
         userService.createWatchlist(user);
 
@@ -56,5 +62,4 @@ public class AuthenticationService {
         String jwtToken = jwtService.generateToken(user);
         return new AuthenticationResponse(jwtToken, user.getRole(), user.getId());
     }
-
 }

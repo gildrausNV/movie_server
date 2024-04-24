@@ -85,4 +85,8 @@ public class UserService {
         User currentlyLoggedInUser = getCurrentlyLoggedInUser();
         return watchlistRepository.findWatchlistByUser_Id(currentlyLoggedInUser.getId());
     }
+
+    public boolean checkUsernameExists(String username){
+        return userRepository.findUserByUsername(username).stream().count() != 0;
+    }
 }
