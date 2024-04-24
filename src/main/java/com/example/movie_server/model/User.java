@@ -28,16 +28,6 @@ public class User implements UserDetails {
     private Role role;
     private String avatar;
 
-    public User(String firstname, String lastname, String email, String username, String encode, Role role, String avatar) {
-        this.firstName = firstname;
-        this.lastName = lastname;
-        this.email = email;
-        this.password = encode;
-        this.username = username;
-        this.role = role;
-        this.avatar = avatar;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(role);

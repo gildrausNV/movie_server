@@ -9,6 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -19,8 +20,4 @@ public class Watchlist {
     private User user;
     private List<Movie> movies;
 
-    public Watchlist(User user, List<Movie> movies) {
-        this.user = user;
-        this.movies = movies;
-    }
 }

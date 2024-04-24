@@ -83,9 +83,8 @@ public class JwtService {
     }
 
     public String extractTokenFromRequest(ServerHttpRequest request) {
-        // Example: Extract the token from the "token" query parameter
         String token = request.getURI().getQuery().split("=")[1];
-        System.out.println("Extracted token: " + token); // Log the token
+        System.out.println("Extracted token: " + token);
         return token;
     }
 

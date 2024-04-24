@@ -35,7 +35,16 @@ public class UserTest {
     @Test
     @DisplayName("Test User construction with constructor")
     public void testUserConstructor() {
-        User user = new User("John", "Doe", "john.doe@example.com", "johndoe", "password", Role.USER, "avatar.jpg");
+        User user = User.builder()
+                .firstName("John")
+                .lastName("Doe")
+                .email("john.doe@example.com")
+                .username("johndoe")
+                .password("password")
+                .role(Role.USER)
+                .avatar("avatar.jpg")
+                .build();
+
 
         assertEquals("John", user.getFirstName());
         assertEquals("Doe", user.getLastName());

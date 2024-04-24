@@ -53,7 +53,6 @@ public class AuthenticationService {
             throw new BadCredentialsException("Bad credentials");
         }
 
-//        userRepository.save(user);
         String jwtToken = jwtService.generateToken(user);
         return new AuthenticationResponse(jwtToken, user.getRole(), user.getId());
     }

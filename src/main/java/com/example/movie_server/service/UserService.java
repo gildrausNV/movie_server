@@ -52,7 +52,7 @@ public class UserService {
     }
 
     public void createWatchlist(User user){
-        watchlistRepository.save(new Watchlist(user, new ArrayList<>()));
+        watchlistRepository.save(Watchlist.builder().user(user).movies(new ArrayList<>()).build());
     }
 
     public User save(User user) {
